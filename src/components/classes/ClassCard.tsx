@@ -50,7 +50,7 @@ const ClassCard = ({ classItem, onEdit, onDelete }: ClassCardProps) => {
           </div>
         </div>
         <CardHeader>
-          <CardTitle>{classItem.name}</CardTitle>
+          <CardTitle>Class {classItem.name}</CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-sm text-muted-foreground">{classItem.subject}</p>

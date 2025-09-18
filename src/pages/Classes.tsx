@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -17,8 +18,10 @@ import type { Class } from "@/data/mockData";
 import ClassCard from "@/components/classes/ClassCard";
 import { showSuccess } from "@/utils/toast";
 
+const classLetters = ["A", "B", "C", "D", "E", "F", "G", "H"] as const;
+
 const classFormSchema = z.object({
-  name: z.string().min(3, { message: "Class name must be at least 3 characters." }),
+  name: z.enum(classLetters, { required_error: "You must select a Class ID." }),
   subject: z.string().min(3, { message: "Subject must be at least 3 characters." }),
 });
 
@@ -41,18 +44,18 @@ const Classes = () => {
 
   const form = useForm<z.infer<typeof classFormSchema>>({
     resolver: zodResolver(classFormSchema),
-    defaultValues: { name: "", subject: "" },
+    defaultValues: { name: undefined, subject: "" },
   });
 
   const handleAddNew = () => {
     setSelectedClass(null);
-    form.reset({ name: "", subject: "" });
+    form.reset({ name: undefined, subject: "" });
     setIsFormOpen(true);
   };
 
   const handleEdit = (classItem: Class) => {
     setSelectedClass(classItem);
-    form.reset({ name: classItem.name, subject: classItem.subject });
+    form.reset({ name: classItem.name as "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H", subject: classItem.subject });
     setIsFormOpen(true);
   };
 
@@ -64,7 +67,7 @@ const Classes = () => {
   const confirmDelete = () => {
     if (selectedClass) {
       setClasses(classes.filter((c) => c.id !== selectedClass.id));
-      showSuccess(`Class "${selectedClass.name}" deleted.`);
+      showSuccess(`Class ${selectedClass.name} deleted.`);
       setIsDeleteConfirmOpen(false);
       setSelectedClass(null);
     }
@@ -78,7 +81,7 @@ const Classes = () => {
           c.id === selectedClass.id ? { ...c, ...values } : c
         )
       );
-      showSuccess(`Class "${values.name}" updated.`);
+      showSuccess(`Class ${values.name} updated.`);
     } else {
       // Create
       const newClass: Class = {
@@ -88,7 +91,7 @@ const Classes = () => {
         imageUrl: `https://source.unsplash.com/random/400x300?${values.subject.toLowerCase()}`,
       };
       setClasses([newClass, ...classes]);
-      showSuccess(`Class "${values.name}" created.`);
+      showSuccess(`Class ${values.name} created.`);
     }
     setIsFormOpen(false);
     setSelectedClass(null);
@@ -97,7 +100,8 @@ const Classes = () => {
   const filteredClasses = useMemo(
     () =>
       classes.filter((c) =>
-        c.name.toLowerCase().includes(searchTerm.toLowerCase())
+        c.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        `Class ${c.name}`.toLowerCase().includes(searchTerm.toLowerCase())
       ),
     [classes, searchTerm]
   );
@@ -157,10 +161,19 @@ const Classes = () => {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Class Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="e.g., Advanced Physics" {...field} />
-                    </FormControl>
+                    <FormLabel>Class ID</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select a Class ID" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {classLetters.map(letter => (
+                          <SelectItem key={letter} value={letter}>Class {letter}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -193,7 +206,7 @@ const Classes = () => {
           <AlertDialogHeader>
             <AlertDialogTitle>Are you sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete the class "{selectedClass?.name}".
+              This action cannot be undone. This will permanently delete Class {selectedClass?.name}.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
