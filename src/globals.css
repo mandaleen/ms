@@ -69,7 +69,7 @@
 
 @layer components {
   .glass-card {
-    @apply bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl shadow-lg;
+    @apply bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl shadow-lg;
   }
   .dark .glass-card {
     @apply bg-black/10 border-white/10;

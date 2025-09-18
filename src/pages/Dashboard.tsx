@@ -52,7 +52,7 @@ const Dashboard = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <motion.div variants={itemVariants} className="lg:col-span-2">
-           <Card className="h-full">
+           <Card className="h-full glass-card">
              <CardHeader>
                <CardTitle>Performance Overview</CardTitle>
              </CardHeader>
@@ -62,7 +62,7 @@ const Dashboard = () => {
            </Card>
         </motion.div>
         <motion.div variants={itemVariants}>
-           <RecentActivity activities={recentActivity} />
+           <RecentActivity activities={recentActivity} className="glass-card" />
         </motion.div>
       </div>
     </motion.div>

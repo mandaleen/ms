@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Bell, CheckCircle, Info, AlertTriangle, Calendar } from "lucide-react";
 import { Activity } from "@/data/mockData";
+import { cn } from "@/lib/utils";
 
 const activityIcons = {
   success: <CheckCircle className="h-4 w-4 text-green-500" />,
@@ -11,11 +12,12 @@ const activityIcons = {
 
 interface RecentActivityProps {
   activities: Activity[];
+  className?: string;
 }
 
-const RecentActivity = ({ activities }: RecentActivityProps) => {
+const RecentActivity = ({ activities, className }: RecentActivityProps) => {
   return (
-    <Card>
+    <Card className={cn("h-full", className)}>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Bell className="h-5 w-5" />
