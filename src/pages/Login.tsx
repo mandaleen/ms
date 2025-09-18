@@ -95,17 +95,14 @@ const Login = () => {
                 showError(error.message);
             } else {
                 if (data.session) {
-                    // Email confirmation is disabled, user is logged in.
                     showSuccess("Account created successfully!");
                     navigate('/');
                 } else {
-                    // Email confirmation is enabled.
                     showSuccess("Account created! Please check your email to verify your account.");
                     setIsSignUp(false);
                 }
             }
         } else {
-            // Sign in logic
             const { error } = await supabase.auth.signInWithPassword({ email, password });
             if (error) {
                 showError(error.message);
@@ -129,10 +126,7 @@ const Login = () => {
 
     const containerVariants = {
         hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: { staggerChildren: 0.1, delayChildren: 0.2 },
-        },
+        visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.2 } },
     };
 
     const itemVariants = {
@@ -140,6 +134,7 @@ const Login = () => {
         visible: { y: 0, opacity: 1, transition: { type: "spring", stiffness: 100 } },
     };
 
+    const title = isSignUp ? "Create an Account" : "Welcome to Mandaleen";
     const description = isSignUp ? "Join us and start managing your classes efficiently." : "Access your account and continue your journey with us.";
     const heroImageSrc = "https://images.unsplash.com/photo-1642615835477-d303d7dc9ee9?w=2160&q=80";
 
@@ -154,7 +149,7 @@ const Login = () => {
                 >
                     <div className="flex flex-col gap-6">
                         <motion.h1 variants={itemVariants} className="text-4xl md:text-5xl font-display font-semibold leading-tight">
-                            {isSignUp ? "Create an Account" : "Welcome to Mandaleen"}
+                            {title}
                         </motion.h1>
                         <motion.p variants={itemVariants} className="text-muted-foreground">{description}</motion.p>
 
