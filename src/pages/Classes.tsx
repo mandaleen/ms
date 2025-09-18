@@ -96,14 +96,13 @@ const Classes = () => {
     setSelectedClass(null);
   };
 
-  const filteredClasses = useMemo(
-    () =>
-      classes.filter((c) =>
+  const filteredClasses = useMemo(() => {
+    return classes.filter(
+      (c) =>
         c.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
         `Class ${c.name}`.toLowerCase().includes(searchTerm.toLowerCase())
-      ),
-    [classes, searchTerm]
-  );
+    );
+  }, [classes, searchTerm]);
 
   return (
     <div className="space-y-6">
