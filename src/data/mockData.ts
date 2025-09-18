@@ -15,6 +15,14 @@ export interface Activity {
   type: "success" | "info" | "warning" | "event";
 }
 
+export interface Class {
+  id: string;
+  name: string;
+  subject: string;
+  studentCount: number;
+  imageUrl: string;
+}
+
 export const mockStats: Stat[] = [
   {
     title: "Total Students",
@@ -56,4 +64,49 @@ export const recentActivity: Activity[] = [
     { action: "Grades for 'Physics II' final exam have been uploaded.", time: "3 hours ago", type: "warning" },
     { action: "New assignment 'Essay on Renaissance' posted for 'Literature'.", time: "5 hours ago", type: "info" },
     { action: "Parent-teacher meeting scheduled for 'Emily White'.", time: "1 day ago", type: "event" },
+];
+
+export const mockClasses: Class[] = [
+  {
+    id: "1",
+    name: "Mathematics 101",
+    subject: "Math",
+    studentCount: 15,
+    imageUrl: "https://source.unsplash.com/random/400x300?math,geometry",
+  },
+  {
+    id: "2",
+    name: "History of Civilization",
+    subject: "History",
+    studentCount: 20,
+    imageUrl: "https://source.unsplash.com/random/400x300?history,ruins",
+  },
+  {
+    id: "3",
+    name: "Advanced Physics",
+    subject: "Science",
+    studentCount: 12,
+    imageUrl: "https://source.unsplash.com/random/400x300?physics,laboratory",
+  },
+  {
+    id: "4",
+    name: "Creative Writing Workshop",
+    subject: "English",
+    studentCount: 18,
+    imageUrl: "https://source.unsplash.com/random/400x300?writing,pen",
+  },
+  {
+    id: "5",
+    name: "Introduction to Programming",
+    subject: "Computer Science",
+    studentCount: 25,
+    imageUrl: "https://source.unsplash.com/random/400x300?code,computer",
+  },
+  {
+    id: "6",
+    name: "Spanish Language and Culture",
+    subject: "Language",
+    studentCount: 10,
+    imageUrl: "https://source.unsplash.com/random/400x300?spain,culture",
+  },
 ];
