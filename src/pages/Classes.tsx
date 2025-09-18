@@ -88,7 +88,6 @@ const Classes = () => {
         id: uuidv4(),
         ...values,
         studentCount: 0,
-        imageUrl: `https://source.unsplash.com/random/400x300?${values.subject.toLowerCase()}`,
       };
       setClasses([newClass, ...classes]);
       showSuccess(`Class ${values.name} created.`);
@@ -166,7 +165,7 @@ const Classes = () => {
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select a Class ID" />
-                        </SelectTrigger>
+                        </Trigger>
                       </FormControl>
                       <SelectContent>
                         {classLetters.map(letter => (
