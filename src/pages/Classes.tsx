@@ -129,21 +129,36 @@ const Classes = () => {
         />
       </div>
 
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-      >
-        {filteredClasses.map((classItem) => (
-          <ClassCard
-            key={classItem.id}
-            classItem={classItem}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-          />
-        ))}
-      </motion.div>
+      {filteredClasses.length > 0 ? (
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+        >
+          {filteredClasses.map((classItem) => (
+            <ClassCard
+              key={classItem.id}
+              classItem={classItem}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+            />
+          ))}
+        </motion.div>
+      ) : (
+        <div className="flex flex-col items-center justify-center text-center p-12 border-2 border-dashed rounded-lg bg-secondary/50">
+          <h3 className="text-lg font-semibold">No Classes Found</h3>
+          <p className="text-muted-foreground mt-2 max-w-md">
+            {searchTerm ? `No classes match your search for "${searchTerm}". Try a different search term.` : "You haven't created any classes yet. Click the button to add your first one."}
+          </p>
+          {!searchTerm && (
+            <Button onClick={handleAddNew} className="mt-4">
+              <PlusCircle className="mr-2 h-4 w-4" />
+              Create First Class
+            </Button>
+          )}
+        </div>
+      )}
 
       {/* Form Dialog */}
       <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>

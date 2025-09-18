@@ -39,16 +39,25 @@ const Dashboard = () => {
         <p className="text-muted-foreground">Welcome back, Jane Doe! Here's your overview for today.</p>
       </motion.div>
 
-      <motion.div
-        variants={containerVariants}
-        className="grid gap-6 md:grid-cols-2 lg:grid-cols-4"
-      >
-        {mockStats.map((stat, index) => (
-          <motion.div key={index} variants={itemVariants}>
-            <StatCard {...stat} />
-          </motion.div>
-        ))}
-      </motion.div>
+      {mockStats.length > 0 ? (
+        <motion.div
+          variants={containerVariants}
+          className="grid gap-6 md:grid-cols-2 lg:grid-cols-4"
+        >
+          {mockStats.map((stat, index) => (
+            <motion.div key={index} variants={itemVariants}>
+              <StatCard {...stat} />
+            </motion.div>
+          ))}
+        </motion.div>
+      ) : (
+        <motion.div variants={itemVariants}>
+          <Card className="text-center p-8 bg-secondary/50">
+            <h3 className="text-lg font-semibold">No Statistics Yet</h3>
+            <p className="text-muted-foreground mt-2">Key metrics will appear here as you add data.</p>
+          </Card>
+        </motion.div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <motion.div variants={itemVariants} className="lg:col-span-2">
@@ -57,7 +66,9 @@ const Dashboard = () => {
                <CardTitle>Performance Overview</CardTitle>
              </CardHeader>
              <CardContent className="h-[300px] flex items-center justify-center">
-               <p className="text-muted-foreground">Chart component coming soon!</p>
+               <div className="text-center text-muted-foreground">
+                 <p>Performance data will be shown here.</p>
+               </div>
              </CardContent>
            </Card>
         </motion.div>
