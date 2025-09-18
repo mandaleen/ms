@@ -6,8 +6,8 @@ import { Stat } from "@/data/mockData";
 const StatCard = ({ title, value, icon: Icon, change, changeType, color }: Stat) => {
   return (
     <motion.div
-      whileHover={{ y: -5, scale: 1.02 }}
-      transition={{ type: "spring", stiffness: 300 }}
+      whileHover={{ y: -4 }}
+      transition={{ duration: 0.2, ease: "easeInOut" }}
     >
       <Card className={`relative overflow-hidden border-none text-white bg-gradient-to-br ${color}`}>
         <div className="absolute -right-8 -top-8 w-28 h-28 rounded-full bg-white/10" />
