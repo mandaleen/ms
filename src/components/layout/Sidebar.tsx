@@ -21,10 +21,21 @@ const Sidebar = () => {
       transition={{ duration: 0.3, ease: "easeInOut" }}
       className="relative h-full bg-card border-r flex flex-col"
     >
-      <div className="flex items-center justify-between p-4 border-b h-16">
-        <AnimatePresence>
-          {!isCollapsed && (
+      <div className={`flex items-center p-4 border-b h-16 ${isCollapsed ? "justify-center" : "justify-between"}`}>
+        <AnimatePresence mode="wait" initial={false}>
+          {isCollapsed ? (
             <motion.div
+              key="icon-logo"
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <span className="text-3xl" role="img" aria-label="orange">🍊</span>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="full-logo"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
