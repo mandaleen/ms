@@ -21,7 +21,7 @@ const Sidebar = () => {
     <motion.div
       animate={{ width: isCollapsed ? 80 : 300 }}
       transition={{ duration: 0.3, ease: "easeInOut" }}
-      className="relative h-screen bg-card border-r flex flex-col"
+      className="relative h-full bg-card border-r flex flex-col"
     >
       <div className="flex items-center justify-between p-4 border-b h-16">
         <AnimatePresence>
@@ -38,7 +38,7 @@ const Sidebar = () => {
             </motion.div>
           )}
         </AnimatePresence>
-        <Button variant="ghost" size="icon" onClick={() => setIsCollapsed(!isCollapsed)} className="absolute -right-5 top-6 bg-card border rounded-full h-10 w-10">
+        <Button variant="ghost" size="icon" onClick={() => setIsCollapsed(!isCollapsed)} className="absolute -right-5 top-6 bg-card border rounded-full h-10 w-10 z-20">
           {isCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
         </Button>
       </div>
