@@ -18,7 +18,6 @@ import type { Class } from "@/data/mockData";
 import ClassCard from "@/components/classes/ClassCard";
 import { showError, showSuccess } from "@/utils/toast";
 import { supabase } from "@/integrations/supabase/client";
-import { useSession } from "@/contexts/SessionContext";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const classLetters = ["A", "B", "C", "D", "E", "F", "G", "H"] as const;
@@ -39,7 +38,6 @@ const containerVariants = {
 };
 
 const Classes = () => {
-  const { user } = useSession();
   const queryClient = useQueryClient();
   const [searchTerm, setSearchTerm] = useState("");
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -53,7 +51,6 @@ const Classes = () => {
       if (error) throw new Error(error.message);
       return data;
     },
-    enabled: !!user,
   });
 
   const createClassMutation = useMutation({
@@ -128,14 +125,11 @@ const Classes = () => {
   };
 
   const onSubmit = (values: z.infer<typeof classFormSchema>) => {
-    if (!user) return showError("You must be logged in.");
-
     if (selectedClass) {
       updateClassMutation.mutate({ id: selectedClass.id, ...values });
     } else {
       const newClass = {
         ...values,
-        user_id: user.id,
         student_count: 0,
         color: classColors[classes.length % classColors.length],
       };
@@ -230,7 +224,7 @@ const Classes = () => {
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select a Class ID" />
-                        </SelectTrigger>
+                        </Trigger>
                       </FormControl>
                       <SelectContent>
                         {classLetters.map(letter => (

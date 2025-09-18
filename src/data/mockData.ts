@@ -21,7 +21,6 @@ export interface Class {
   subject: string;
   student_count: number;
   color: string;
-  user_id?: string;
 }
 
 export const mockStats: Stat[] = [];
