@@ -23,25 +23,12 @@ const itemVariants = {
   },
 };
 
-const classGradients: { [key: string]: string } = {
-  A: "from-blue-500 to-indigo-600",
-  B: "from-green-500 to-teal-600",
-  C: "from-yellow-500 to-orange-600",
-  D: "from-pink-500 to-rose-600",
-  E: "from-purple-500 to-violet-600",
-  F: "from-sky-500 to-cyan-600",
-  G: "from-red-500 to-red-700",
-  H: "from-lime-400 to-green-500",
-};
-
 const ClassCard = ({ classItem, onEdit, onDelete }: ClassCardProps) => {
-  const gradient = classGradients[classItem.name] || "from-gray-500 to-gray-600";
-
   return (
     <motion.div variants={itemVariants}>
       <Card className="overflow-hidden transition-all hover:shadow-lg hover:-translate-y-1 duration-300 ease-in-out">
-        <div className={`relative w-full h-40 flex items-center justify-center bg-gradient-to-br ${gradient}`}>
-          <span className="font-display text-7xl font-bold text-white/80 select-none">{classItem.name}</span>
+        <div className="relative">
+          <img src={classItem.imageUrl} alt={classItem.name} className="w-full h-40 object-cover" />
           <div className="absolute top-2 right-2">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>

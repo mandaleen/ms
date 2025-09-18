@@ -20,6 +20,7 @@ export interface Class {
   name: string;
   subject: string;
   studentCount: number;
+  imageUrl: string;
 }
 
 export const mockStats: Stat[] = [
@@ -71,35 +72,41 @@ export const mockClasses: Class[] = [
     name: "A",
     subject: "Math",
     studentCount: 15,
+    imageUrl: "https://source.unsplash.com/random/400x300?math,geometry",
   },
   {
     id: "2",
     name: "B",
     subject: "History",
     studentCount: 20,
+    imageUrl: "https://source.unsplash.com/random/400x300?history,ruins",
   },
   {
     id: "3",
     name: "C",
     subject: "Science",
     studentCount: 12,
+    imageUrl: "https://source.unsplash.com/random/400x300?physics,laboratory",
   },
   {
     id: "4",
     name: "D",
     subject: "English",
     studentCount: 18,
+    imageUrl: "https://source.unsplash.com/random/400x300?writing,pen",
   },
   {
     id: "5",
     name: "E",
     subject: "Computer Science",
     studentCount: 25,
+    imageUrl: "https://source.unsplash.com/random/400x300?code,computer",
   },
   {
     id: "6",
     name: "F",
     subject: "Language",
     studentCount: 10,
+    imageUrl: "https://source.unsplash.com/random/400x300?spain,culture",
   },
 ];

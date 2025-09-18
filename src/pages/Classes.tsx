@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { PlusCircle, Search } from "lucide-react";
 import { v4 as uuidv4 } from "uuid";
@@ -88,6 +88,7 @@ const Classes = () => {
         id: uuidv4(),
         ...values,
         studentCount: 0,
+        imageUrl: `https://source.unsplash.com/random/400x300?${values.subject.toLowerCase()}`,
       };
       setClasses([newClass, ...classes]);
       showSuccess(`Class ${values.name} created.`);
@@ -96,10 +97,13 @@ const Classes = () => {
     setSelectedClass(null);
   };
 
-  const filteredClasses = classes.filter(
-    (c) =>
-      c.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      `Class ${c.name}`.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredClasses = useMemo(
+    () =>
+      classes.filter((c) =>
+        c.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        `Class ${c.name}`.toLowerCase().includes(searchTerm.toLowerCase())
+      ),
+    [classes, searchTerm]
   );
 
   return (
@@ -162,7 +166,7 @@ const Classes = () => {
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select a Class ID" />
-                        </Trigger>
+                        </SelectTrigger>
                       </FormControl>
                       <SelectContent>
                         {classLetters.map(letter => (
