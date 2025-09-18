@@ -10,7 +10,6 @@ import Dashboard from "./pages/Dashboard";
 import Classes from "./pages/Classes";
 import Students from "./pages/Students";
 import Attendance from "./pages/Attendance";
-import Notes from "./pages/Notes";
 import Analytics from "./pages/Analytics";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
@@ -30,7 +29,6 @@ const App = () => (
               <Route path="/classes" element={<Classes />} />
               <Route path="/students" element={<Students />} />
               <Route path="/attendance" element={<Attendance />} />
-              <Route path="/notes" element={<Notes />} />
               <Route path="/analytics" element={<Analytics />} />
               <Route path="/settings" element={<Settings />} />
             </Route>

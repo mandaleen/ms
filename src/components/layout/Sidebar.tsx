@@ -1,16 +1,14 @@
 import { NavLink } from "react-router-dom";
-import { BookOpen, GraduationCap, Home, Users, Calendar, FileText, BarChart2, Settings, ChevronLeft, ChevronRight } from "lucide-react";
+import { BookOpen, GraduationCap, Home, Users, Calendar, BarChart2, Settings, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const navItems = [
   { name: "Dashboard", path: "/", icon: Home },
   { name: "Classes", path: "/classes", icon: BookOpen },
   { name: "Students", path: "/students", icon: Users },
   { name: "Attendance", path: "/attendance", icon: Calendar },
-  { name: "Notes", path: "/notes", icon: FileText },
   { name: "Analytics", path: "/analytics", icon: BarChart2 },
 ];
 
