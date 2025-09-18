@@ -1,4 +1,4 @@
-import { BookOpen, Users, BarChart3, CheckCircle, LucideIcon } from "lucide-react";
+import { LucideIcon } from "lucide-react";
 
 export interface Stat {
   title: string;
@@ -19,8 +19,9 @@ export interface Class {
   id: string;
   name: string;
   subject: string;
-  studentCount: number;
+  student_count: number;
   color: string;
+  user_id?: string;
 }
 
 export const mockStats: Stat[] = [];

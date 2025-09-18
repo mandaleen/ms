@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { PlusCircle, Search } from "lucide-react";
-import { v4 as uuidv4 } from "uuid";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,10 +13,13 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
-import { mockClasses, classColors } from "@/data/mockData";
+import { classColors } from "@/data/mockData";
 import type { Class } from "@/data/mockData";
 import ClassCard from "@/components/classes/ClassCard";
-import { showSuccess } from "@/utils/toast";
+import { showError, showSuccess } from "@/utils/toast";
+import { supabase } from "@/integrations/supabase/client";
+import { useSession } from "@/contexts/SessionContext";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const classLetters = ["A", "B", "C", "D", "E", "F", "G", "H"] as const;
 
@@ -36,11 +39,65 @@ const containerVariants = {
 };
 
 const Classes = () => {
-  const [classes, setClasses] = useState<Class[]>(mockClasses);
+  const { user } = useSession();
+  const queryClient = useQueryClient();
   const [searchTerm, setSearchTerm] = useState("");
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
   const [selectedClass, setSelectedClass] = useState<Class | null>(null);
+
+  const { data: classes = [], isLoading } = useQuery<Class[]>({
+    queryKey: ["classes"],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("classes").select("*").order("created_at", { ascending: false });
+      if (error) throw new Error(error.message);
+      return data;
+    },
+    enabled: !!user,
+  });
+
+  const createClassMutation = useMutation({
+    mutationFn: async (newClass: Omit<Class, "id" | "student_count" | "color">) => {
+      const { data, error } = await supabase.from("classes").insert(newClass).select();
+      if (error) throw new Error(error.message);
+      return data[0];
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["classes"] });
+      showSuccess("Class created successfully.");
+      setIsFormOpen(false);
+    },
+    onError: (error) => showError(error.message),
+  });
+
+  const updateClassMutation = useMutation({
+    mutationFn: async (updatedClass: Partial<Class> & { id: string }) => {
+      const { data, error } = await supabase.from("classes").update({ name: updatedClass.name, subject: updatedClass.subject }).eq("id", updatedClass.id).select();
+      if (error) throw new Error(error.message);
+      return data[0];
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["classes"] });
+      showSuccess("Class updated successfully.");
+      setIsFormOpen(false);
+      setSelectedClass(null);
+    },
+    onError: (error) => showError(error.message),
+  });
+
+  const deleteClassMutation = useMutation({
+    mutationFn: async (classId: string) => {
+      const { error } = await supabase.from("classes").delete().eq("id", classId);
+      if (error) throw new Error(error.message);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["classes"] });
+      showSuccess("Class deleted successfully.");
+      setIsDeleteConfirmOpen(false);
+      setSelectedClass(null);
+    },
+    onError: (error) => showError(error.message),
+  });
 
   const form = useForm<z.infer<typeof classFormSchema>>({
     resolver: zodResolver(classFormSchema),
@@ -55,7 +112,7 @@ const Classes = () => {
 
   const handleEdit = (classItem: Class) => {
     setSelectedClass(classItem);
-    form.reset({ name: classItem.name as "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H", subject: classItem.subject });
+    form.reset({ name: classItem.name as any, subject: classItem.subject });
     setIsFormOpen(true);
   };
 
@@ -66,35 +123,24 @@ const Classes = () => {
 
   const confirmDelete = () => {
     if (selectedClass) {
-      setClasses(classes.filter((c) => c.id !== selectedClass.id));
-      showSuccess(`Class ${selectedClass.name} deleted.`);
-      setIsDeleteConfirmOpen(false);
-      setSelectedClass(null);
+      deleteClassMutation.mutate(selectedClass.id);
     }
   };
 
   const onSubmit = (values: z.infer<typeof classFormSchema>) => {
+    if (!user) return showError("You must be logged in.");
+
     if (selectedClass) {
-      // Edit
-      setClasses(
-        classes.map((c) =>
-          c.id === selectedClass.id ? { ...c, ...values } : c
-        )
-      );
-      showSuccess(`Class ${values.name} updated.`);
+      updateClassMutation.mutate({ id: selectedClass.id, ...values });
     } else {
-      // Create
-      const newClass: Class = {
-        id: uuidv4(),
+      const newClass = {
         ...values,
-        studentCount: 0,
+        user_id: user.id,
+        student_count: 0,
         color: classColors[classes.length % classColors.length],
       };
-      setClasses([newClass, ...classes]);
-      showSuccess(`Class ${values.name} created.`);
+      createClassMutation.mutate(newClass);
     }
-    setIsFormOpen(false);
-    setSelectedClass(null);
   };
 
   const filteredClasses = useMemo(
@@ -129,7 +175,11 @@ const Classes = () => {
         />
       </div>
 
-      {filteredClasses.length > 0 ? (
+      {isLoading ? (
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {Array.from({ length: 4 }).map((_, i) => <Skeleton key={i} className="h-64 w-full" />)}
+        </div>
+      ) : filteredClasses.length > 0 ? (
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -139,7 +189,7 @@ const Classes = () => {
           {filteredClasses.map((classItem) => (
             <ClassCard
               key={classItem.id}
-              classItem={classItem}
+              classItem={{...classItem, studentCount: classItem.student_count}}
               onEdit={handleEdit}
               onDelete={handleDelete}
             />
@@ -160,7 +210,6 @@ const Classes = () => {
         </div>
       )}
 
-      {/* Form Dialog */}
       <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
         <DialogContent>
           <DialogHeader>
@@ -208,14 +257,13 @@ const Classes = () => {
               />
               <DialogFooter>
                 <Button type="button" variant="outline" onClick={() => setIsFormOpen(false)}>Cancel</Button>
-                <Button type="submit">Save</Button>
+                <Button type="submit" disabled={createClassMutation.isPending || updateClassMutation.isPending}>Save</Button>
               </DialogFooter>
             </form>
           </Form>
         </DialogContent>
       </Dialog>
 
-      {/* Delete Confirmation Dialog */}
       <AlertDialog open={isDeleteConfirmOpen} onOpenChange={setIsDeleteConfirmOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -226,7 +274,7 @@ const Classes = () => {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={confirmDelete} className="bg-destructive hover:bg-destructive/90">Delete</AlertDialogAction>
+            <AlertDialogAction onClick={confirmDelete} disabled={deleteClassMutation.isPending} className="bg-destructive hover:bg-destructive/90">Delete</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
