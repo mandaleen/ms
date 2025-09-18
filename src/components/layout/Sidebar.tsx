@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { BookOpen, GraduationCap, Home, Users, Calendar, BarChart2, Settings, ChevronLeft, ChevronRight } from "lucide-react";
+import { BookOpen, Home, Users, Calendar, BarChart2, Settings, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -31,8 +31,8 @@ const Sidebar = () => {
               transition={{ duration: 0.2 }}
               className="flex items-center gap-2"
             >
-              <GraduationCap className="h-8 w-8 text-primary" />
-              <h1 className="text-xl font-bold font-display whitespace-nowrap">TeacherDash</h1>
+              <span className="text-3xl" role="img" aria-label="orange">🍊</span>
+              <h1 className="text-xl font-bold font-display whitespace-nowrap">Mandaleen</h1>
             </motion.div>
           )}
         </AnimatePresence>
