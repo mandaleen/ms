@@ -146,7 +146,7 @@ const Classes = () => {
     [classes, searchTerm]
   );
 
-  return (
+  const pageContent = (
     <div className="space-y-6">
       <header className="flex items-center justify-between">
         <div>
@@ -274,6 +274,8 @@ const Classes = () => {
       </AlertDialog>
     </div>
   );
+
+  return pageContent;
 };
 
 export default Classes;
