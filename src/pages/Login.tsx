@@ -143,7 +143,7 @@ const Login = () => {
                 >
                     <div className="flex flex-col gap-6">
                         <motion.h1 variants={itemVariants} className="text-4xl md:text-5xl font-display font-semibold leading-tight">
-                            {isSignUp ? "Create an Account" : <span><span className="font-light">Welcome to</span> Mandaleen 🍊</span>}
+                            {isSignUp ? "Create an Account" : "Welcome to Mandaleen"}
                         </motion.h1>
                         <motion.p variants={itemVariants} className="text-muted-foreground">{description}</motion.p>
 
