@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { PlusCircle, Search } from "lucide-react";
 import { v4 as uuidv4 } from "uuid";
