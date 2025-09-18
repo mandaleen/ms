@@ -20,7 +20,7 @@ export interface Class {
   name: string;
   subject: string;
   studentCount: number;
-  imageUrl: string;
+  color: string;
 }
 
 export const mockStats: Stat[] = [
@@ -66,47 +66,58 @@ export const recentActivity: Activity[] = [
     { action: "Parent-teacher meeting scheduled for 'Emily White'.", time: "1 day ago", type: "event" },
 ];
 
+export const classColors = [
+  "from-blue-500 to-indigo-600",
+  "from-green-500 to-teal-600",
+  "from-yellow-500 to-orange-600",
+  "from-pink-500 to-rose-600",
+  "from-purple-500 to-violet-600",
+  "from-red-500 to-rose-600",
+  "from-cyan-500 to-sky-600",
+  "from-lime-500 to-emerald-600",
+];
+
 export const mockClasses: Class[] = [
   {
     id: "1",
     name: "A",
     subject: "Math",
     studentCount: 15,
-    imageUrl: "https://source.unsplash.com/random/400x300?math,geometry",
+    color: classColors[0],
   },
   {
     id: "2",
     name: "B",
     subject: "History",
     studentCount: 20,
-    imageUrl: "https://source.unsplash.com/random/400x300?history,ruins",
+    color: classColors[1],
   },
   {
     id: "3",
     name: "C",
     subject: "Science",
     studentCount: 12,
-    imageUrl: "https://source.unsplash.com/random/400x300?physics,laboratory",
+    color: classColors[2],
   },
   {
     id: "4",
     name: "D",
     subject: "English",
     studentCount: 18,
-    imageUrl: "https://source.unsplash.com/random/400x300?writing,pen",
+    color: classColors[3],
   },
   {
     id: "5",
     name: "E",
     subject: "Computer Science",
     studentCount: 25,
-    imageUrl: "https://source.unsplash.com/random/400x300?code,computer",
+    color: classColors[4],
   },
   {
     id: "6",
     name: "F",
     subject: "Language",
     studentCount: 10,
-    imageUrl: "https://source.unsplash.com/random/400x300?spain,culture",
+    color: classColors[5],
   },
 ];

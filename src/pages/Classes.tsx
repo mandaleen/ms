@@ -13,7 +13,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
-import { mockClasses } from "@/data/mockData";
+import { mockClasses, classColors } from "@/data/mockData";
 import type { Class } from "@/data/mockData";
 import ClassCard from "@/components/classes/ClassCard";
 import { showSuccess } from "@/utils/toast";
@@ -88,7 +88,7 @@ const Classes = () => {
         id: uuidv4(),
         ...values,
         studentCount: 0,
-        imageUrl: `https://source.unsplash.com/random/400x300?${values.subject.toLowerCase()}`,
+        color: classColors[classes.length % classColors.length],
       };
       setClasses([newClass, ...classes]);
       showSuccess(`Class ${values.name} created.`);

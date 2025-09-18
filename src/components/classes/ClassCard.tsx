@@ -4,6 +4,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { MoreVertical, Users, Edit, Trash2 } from "lucide-react";
 import { motion } from "framer-motion";
 import type { Class } from "@/data/mockData";
+import { cn } from "@/lib/utils";
 
 interface ClassCardProps {
   classItem: Class;
@@ -27,8 +28,7 @@ const ClassCard = ({ classItem, onEdit, onDelete }: ClassCardProps) => {
   return (
     <motion.div variants={itemVariants}>
       <Card className="overflow-hidden transition-all hover:shadow-lg hover:-translate-y-1 duration-300 ease-in-out">
-        <div className="relative">
-          <img src={classItem.imageUrl} alt={classItem.name} className="w-full h-40 object-cover" />
+        <div className={cn("relative w-full h-40 bg-gradient-to-br", classItem.color)}>
           <div className="absolute top-2 right-2">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
